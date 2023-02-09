@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Product from "./Product";
 
 const LandingPage = () => {
 	const [data, setData] = useState([]);
@@ -21,7 +22,7 @@ const LandingPage = () => {
 		<>
 			<h1>Products</h1>
 			{data.map((product) => {
-				return <p>{product.title}</p>;
+				return <Product key={product.id} product={product} />;
 			})}
 		</>
 	);
