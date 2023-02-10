@@ -74,7 +74,7 @@ const LandingPage = () => {
 					.map((product) => {
 						return (
 							<div className="card">
-								<Product key={product.id} product={product} />
+								<Product product={product} />
 							</div>
 						);
 					})}

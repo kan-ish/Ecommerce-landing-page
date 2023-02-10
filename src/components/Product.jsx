@@ -56,8 +56,7 @@ const Product = ({ product }) => {
 							${price}
 						</Text>
 						<Text color="black" fontSize="xs">
-							&#9733;{rating.rate}
-							<p>&#40;{rating.count} reviews&#41; </p>
+							&#9733;{rating.rate} &#40;{rating.count} reviews&#41;
 						</Text>
 					</Stack>
 				</CardBody>
