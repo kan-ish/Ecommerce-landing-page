@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { SimpleGrid, Heading, Input, Select, Spinner } from "@chakra-ui/react";
+import { SimpleGrid, Heading, Spinner } from "@chakra-ui/react";
 import Product from "./Product";
+import SearchAndSort from "./SearchAndSort";
 
 const LandingPage = () => {
 	const [data, setData] = useState([]);
@@ -33,51 +34,39 @@ const LandingPage = () => {
 			<Heading textAlign="left" mb={10}>
 				Products
 			</Heading>
-			<Input
-				variant="filled"
-				value={searchTerm}
-				onChange={({ target: { value } }) => setSearchTerm(value)}
-				placeholder="Search..."
-				mb={5}
+
+			<SearchAndSort
+				searchTerm={searchTerm}
+				setSearchTerm={setSearchTerm}
+				setSortDirection={setSortDirection}
+				setSortField={setSortField}
 			/>
-			<SimpleGrid mb={10} columns={2} spacing={8}>
-				<Select
-					variant="filled"
-					placeholder="Sort by"
-					onChange={({ target: { value } }) => setSortField(value)}
-				>
-					<option value="rating.rate">Rating</option>
-					<option value="rating.count">Review count</option>
-					<option value="price">Price</option>
-				</Select>
-				<Select
-					variant="filled"
-					placeholder="Sort order"
-					onChange={({ target: { value } }) => setSortDirection(value)}
-				>
-					<option value="ascending">Ascending</option>
-					<option value="descending">Descending</option>
-				</Select>
-			</SimpleGrid>
+
 			<SimpleGrid columns={3} spacing={10}>
 				{data
+					// Search logic
 					.filter(({ title }) =>
 						!searchTerm
 							? true
 							: title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
 					)
+
+					// Sort logic
 					.sort((a, b) => {
 						let sortField1 = sortField;
 						let sortField2 = undefined;
 
+						// handles nested sort parameter by breaking them up
 						if (sortField.indexOf(".") !== -1) {
 							[sortField1, sortField2] = sortField.split(".");
 						}
 
+						// use nullish coaelescing in case sortField2 is not present and only use sortField1
 						const comparisonValue =
 							(a[sortField1][sortField2] ?? a[sortField1]) >
 							(b[sortField1][sortField2] ?? b[sortField1]);
 
+						// sort by ascending or descending order
 						return sortDirection === "ascending"
 							? comparisonValue
 							: !comparisonValue;
@@ -85,7 +74,7 @@ const LandingPage = () => {
 					.map((product) => {
 						return (
 							<div className="card">
-								<Product key={product.id} product={product} />;
+								<Product key={product.id} product={product} />
 							</div>
 						);
 					})}

@@ -10,17 +10,15 @@ import {
 	Text,
 	CardBody,
 	CardFooter,
-	Box,
-	SimpleGrid,
 } from "@chakra-ui/react";
 
 const Product = ({ product }) => {
-	const { id, title, price, description, image, category, rating } = product;
+	const { title, price, description, image, category, rating } = product;
 	const [isReadMore, setIsReadMore] = useState(false);
 
 	return (
 		<>
-			<Card size="md" maxW="sm">
+			<Card size="md" maxW="sm" border="1px" borderColor="gray.200">
 				<CardBody>
 					<Image
 						maxH={300}
@@ -58,8 +56,8 @@ const Product = ({ product }) => {
 							${price}
 						</Text>
 						<Text color="black" fontSize="xs">
-							{rating.rate}
-							<p>{rating.count}</p>
+							&#9733;{rating.rate}
+							<p>&#40;{rating.count} reviews&#41; </p>
 						</Text>
 					</Stack>
 				</CardBody>
