@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid, Heading, Input } from "@chakra-ui/react";
 import Product from "./Product";
 
 const LandingPage = () => {
 	const [data, setData] = useState([]);
+	const [searchTerm, setSearchTerm] = useState("");
 
 	async function requestData() {
 		const res = await fetch("https://fakestoreapi.com/products");
@@ -21,11 +22,24 @@ const LandingPage = () => {
 
 	return (
 		<div>
-			<h1>Products</h1>
+			<Heading mb={10}>Products</Heading>
+			<Input
+				variant="filled"
+				// colorScheme="whatsapp"
+				value={searchTerm}
+				onChange={({ target: { value } }) => setSearchTerm(value)}
+				placeholder="Search..."
+			/>
 			<SimpleGrid columns={3} spacing={10}>
-				{data.map((product) => {
-					return <Product key={product.id} product={product} />;
-				})}
+				{data
+					.filter(({ title }) =>
+						!searchTerm
+							? true
+							: title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+					)
+					.map((product) => {
+						return <Product key={product.id} product={product} />;
+					})}
 			</SimpleGrid>
 		</div>
 	);

@@ -10,6 +10,8 @@ import {
 	Text,
 	CardBody,
 	CardFooter,
+	Box,
+	SimpleGrid,
 } from "@chakra-ui/react";
 
 const Product = ({ product }) => {
