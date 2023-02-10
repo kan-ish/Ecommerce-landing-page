@@ -4,3 +4,9 @@
 	padding: 2rem;
 	text-align: center;
 }
+
+.readmore {
+	color: rgb(51, 102, 204);
+	display: block;
+	margin: auto;
+}
