@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { SimpleGrid } from "@chakra-ui/react";
 import Product from "./Product";
 
 const LandingPage = () => {
@@ -19,12 +20,14 @@ const LandingPage = () => {
 	}, []);
 
 	return (
-		<>
+		<div>
 			<h1>Products</h1>
-			{data.map((product) => {
-				return <Product key={product.id} product={product} />;
-			})}
-		</>
+			<SimpleGrid columns={3} spacing={10}>
+				{data.map((product) => {
+					return <Product key={product.id} product={product} />;
+				})}
+			</SimpleGrid>
+		</div>
 	);
 };
 

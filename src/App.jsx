@@ -1,10 +1,13 @@
 import "./App.css";
 import LandingPage from "./components/LandingPage";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
 	return (
 		<div className="App">
-			<LandingPage />
+			<ChakraProvider>
+				<LandingPage />
+			</ChakraProvider>
 		</div>
 	);
 }
