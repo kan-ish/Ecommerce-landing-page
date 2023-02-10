@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SimpleGrid, Heading, Input, Select } from "@chakra-ui/react";
+import { SimpleGrid, Heading, Input, Select, Spinner } from "@chakra-ui/react";
 import Product from "./Product";
 
 const LandingPage = () => {
@@ -7,12 +7,14 @@ const LandingPage = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [sortField, setSortField] = useState("id");
 	const [sortDirection, setSortDirection] = useState("ascending");
+	const [isDataLoaded, setIsDataLoaded] = useState(false);
 
 	async function requestData() {
 		const res = await fetch("https://fakestoreapi.com/products");
 		const json = await res.json();
 
 		setData(json);
+		setIsDataLoaded(true);
 	}
 
 	useEffect(() => {
@@ -22,32 +24,41 @@ const LandingPage = () => {
 			.catch((e) => console.error(e));
 	}, []);
 
+	if (!isDataLoaded) {
+		return <Spinner color="red.500" size="xl" />;
+	}
+
 	return (
 		<div>
-			<Heading mb={10}>Products</Heading>
+			<Heading textAlign="left" mb={10}>
+				Products
+			</Heading>
 			<Input
 				variant="filled"
 				value={searchTerm}
 				onChange={({ target: { value } }) => setSearchTerm(value)}
 				placeholder="Search..."
+				mb={5}
 			/>
-			<Select
-				variant="filled"
-				placeholder="Sort by"
-				onChange={({ target: { value } }) => setSortField(value)}
-			>
-				<option value="rating.rate">Rating</option>
-				<option value="rating.count">Review count</option>
-				<option value="price">Price</option>
-			</Select>
-			<Select
-				variant="filled"
-				placeholder="Sort order"
-				onChange={({ target: { value } }) => setSortDirection(value)}
-			>
-				<option value="ascending">Ascending</option>
-				<option value="descending">Descending</option>
-			</Select>
+			<SimpleGrid mb={10} columns={2} spacing={8}>
+				<Select
+					variant="filled"
+					placeholder="Sort by"
+					onChange={({ target: { value } }) => setSortField(value)}
+				>
+					<option value="rating.rate">Rating</option>
+					<option value="rating.count">Review count</option>
+					<option value="price">Price</option>
+				</Select>
+				<Select
+					variant="filled"
+					placeholder="Sort order"
+					onChange={({ target: { value } }) => setSortDirection(value)}
+				>
+					<option value="ascending">Ascending</option>
+					<option value="descending">Descending</option>
+				</Select>
+			</SimpleGrid>
 			<SimpleGrid columns={3} spacing={10}>
 				{data
 					.filter(({ title }) =>
