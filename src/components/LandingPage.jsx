@@ -6,6 +6,7 @@ const LandingPage = () => {
 	const [data, setData] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [sortField, setSortField] = useState("id");
+	const [sortDirection, setSortDirection] = useState("ascending");
 
 	async function requestData() {
 		const res = await fetch("https://fakestoreapi.com/products");
@@ -26,20 +27,26 @@ const LandingPage = () => {
 			<Heading mb={10}>Products</Heading>
 			<Input
 				variant="filled"
-				// colorScheme="whatsapp"
 				value={searchTerm}
 				onChange={({ target: { value } }) => setSearchTerm(value)}
 				placeholder="Search..."
 			/>
 			<Select
 				variant="filled"
-				colorScheme="whatsapp"
 				placeholder="Sort by"
 				onChange={({ target: { value } }) => setSortField(value)}
 			>
 				<option value="rating.rate">Rating</option>
 				<option value="rating.count">Review count</option>
 				<option value="price">Price</option>
+			</Select>
+			<Select
+				variant="filled"
+				placeholder="Sort order"
+				onChange={({ target: { value } }) => setSortDirection(value)}
+			>
+				<option value="ascending">Ascending</option>
+				<option value="descending">Descending</option>
 			</Select>
 			<SimpleGrid columns={3} spacing={10}>
 				{data
@@ -60,7 +67,9 @@ const LandingPage = () => {
 							(a[sortField1][sortField2] ?? a[sortField1]) >
 							(b[sortField1][sortField2] ?? b[sortField1]);
 
-						return comparisonValue;
+						return sortDirection === "ascending"
+							? comparisonValue
+							: !comparisonValue;
 					})
 					.map((product) => {
 						return (
