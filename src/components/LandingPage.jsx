@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SimpleGrid, Heading, Spinner } from "@chakra-ui/react";
+import {SimpleGrid, Heading, Spinner, Stack, Alert, AlertIcon} from "@chakra-ui/react";
 import Product from "./Product";
 import SearchAndSort from "./SearchAndSort";
 
@@ -9,20 +9,42 @@ const LandingPage = () => {
 	const [sortField, setSortField] = useState("id");
 	const [sortDirection, setSortDirection] = useState("ascending");
 	const [isDataLoaded, setIsDataLoaded] = useState(false);
+	const [isFetchError, setIsFetchError] = useState(false);
 
 	async function requestData() {
-		const res = await fetch("https://fakestoreapi.com/products");
-		const json = await res.json();
+		// when does fetch throw an error?
+		// when should it throw an error?
+		// how to display error?
+		let res
+		let json
+
+		try {
+			res = await fetch('https://fakestoreapi.com/products');
+		} catch (error) {
+			// handles the case when API is down, 5xx error codes
+			throw new Error('Error while trying to fetch data, backend is probably down')
+		}
+
+		// Uses the 'optional chaining' operator
+		// handles the case of 4xx response codes
+		if (res?.ok) {
+			json = await res.json();
+		} else {
+			throw new Error('Error while trying to read JSON data, we probably did something wrong on the front-end')
+		}
 
 		setData(json);
-		setIsDataLoaded(true);
 	}
 
 	useEffect(() => {
 		//fetch data on load
 		requestData()
 			.then()
-			.catch((e) => console.error(e));
+			.catch((e) => {
+				console.error(e)
+				setIsFetchError(true)
+			})
+			.finally(() => setIsDataLoaded(true));
 	}, []);
 
 	if (!isDataLoaded) {
@@ -42,7 +64,7 @@ const LandingPage = () => {
 				setSortField={setSortField}
 			/>
 
-			<SimpleGrid columns={3} spacing={10}>
+			{!isFetchError && <SimpleGrid columns={3} spacing={10}>
 				{data
 					// Search logic
 					.filter(({ title }) =>
@@ -71,14 +93,18 @@ const LandingPage = () => {
 							? comparisonValue
 							: !comparisonValue;
 					})
-					.map((product) => {
-						return (
-							<div className="card">
-								<Product product={product} />
-							</div>
-						);
-					})}
+					.map((product) =><div><Product product={product} key={product.id} /></div> )}
 			</SimpleGrid>
+			}
+
+			{isFetchError && (
+				<Stack spacing={3}>
+					<Alert status='error'>
+						<AlertIcon />
+						There was an error while trying to load data. We are working to fix it.
+					</Alert>
+				</Stack>
+			)}
 		</div>
 	);
 };
