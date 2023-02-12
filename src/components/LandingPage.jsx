@@ -61,7 +61,7 @@ const LandingPage = () => {
 							[sortField1, sortField2] = sortField.split(".");
 						}
 
-						// use nullish coaelescing in case sortField2 is not present and only use sortField1
+						// use nullish coalescing in case sortField2 is not present and only use sortField1
 						const comparisonValue =
 							(a[sortField1][sortField2] ?? a[sortField1]) >
 							(b[sortField1][sortField2] ?? b[sortField1]);

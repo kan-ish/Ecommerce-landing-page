@@ -6,6 +6,8 @@ const SearchAndSort = ({
 	setSortField,
 	setSearchTerm,
 }) => {
+	// Not using placeholder prop directly
+	// How to make placeholder text non-selectable: https://github.com/chakra-ui/chakra-ui/issues/5863
 	return (
 		<>
 			<Input
@@ -19,18 +21,18 @@ const SearchAndSort = ({
 			<SimpleGrid mb={10} columns={2} spacing={8}>
 				<Select
 					variant="filled"
-					placeholder="Sort by"
 					onChange={({ target: { value } }) => setSortField(value)}
 				>
+					<option selected hidden disabled value="">Sort By</option>
 					<option value="rating.rate">Rating</option>
 					<option value="rating.count">Review count</option>
 					<option value="price">Price</option>
 				</Select>
 				<Select
 					variant="filled"
-					placeholder="Sort order"
 					onChange={({ target: { value } }) => setSortDirection(value)}
 				>
+					<option selected hidden disabled value="">Sort order</option>
 					<option value="ascending">Ascending</option>
 					<option value="descending">Descending</option>
 				</Select>
