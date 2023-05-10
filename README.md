@@ -3,7 +3,7 @@ Landing page of a sample e-commerce website
 
 ## Description
 
-Made using Vite + React and [Chakra UI](https://chakra-ui.com). App is live [here](https://ecommerce.kanishk-singh.dev)
+Made using Vite + React and [Chakra UI](https://chakra-ui.com). App is live [here](https://ecommerce.kanishksingh.dev)
 
 ## Getting Started
 
